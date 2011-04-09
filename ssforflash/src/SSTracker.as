@@ -55,9 +55,6 @@ public class SSTracker extends EventDispatcher {
     }
 
     public function trackEvent(eventName:String, value:String = null):void {
-//        if(_sid == null) {
-//            throw new Error("Call init first and listen for INITIALIZED event.")
-//        }
         var req:URLRequest = _getRequestObject('track_event', 'POST');
         req.data['act'] = eventName;
         if(value) {
@@ -102,7 +99,7 @@ public class SSTracker extends EventDispatcher {
             onError : do_nothing_with_evt});
     }
 
-    private function _sendRequest(request:URLRequest, options:Object = null, count:Number = 0):void {
+    private function _sendRequest(request:URLRequest, options:Object = null):void {
         var loader:URLLoader = new URLLoader();
 
         loader.addEventListener(Event.COMPLETE,
@@ -115,8 +112,8 @@ public class SSTracker extends EventDispatcher {
                         _global_options.onComplete(data);
                 });
 
-        if (count == 0)
-            request.data['sig'] = _generate_signature_my(request.data);
+        request.data['sig'] = _generate_signature_my(request.data);
+
         loader.addEventListener(IOErrorEvent.IO_ERROR,
                 function(evt:IOErrorEvent):void {
                     if (options && options.onError) {
@@ -156,7 +153,9 @@ public class SSTracker extends EventDispatcher {
         var signature:String = "";
         var sorted_array:Array = new Array();
         for (var key:* in request_params) {
-            sorted_array.push(key + "=" + request_params[key]);
+            if(key != 'sig') {
+                sorted_array.push(key + "=" + request_params[key]);
+            }
         }
         sorted_array.sort();
 
