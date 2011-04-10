@@ -26,7 +26,7 @@ class SSTracker
              :rid => rand}.merge(additional_params)
     parms[:sig] = get_signature(parms)
     url = "http://socialstats.ru/flash/#{method_name}"
-    return JSON.parse(Net::HTTP.post_form(URI.parse(url), parms.stringify_keys).body)
+    JSON.parse(Net::HTTP.post_form(URI.parse(url), parms.stringify_keys).body)
   end
 
 
