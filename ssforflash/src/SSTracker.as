@@ -9,8 +9,6 @@ import flash.net.URLLoader;
 import flash.net.URLRequest;
 import flash.net.URLVariables;
 
-import org.osmf.metadata.IFacet;
-
 public class SSTracker extends EventDispatcher {
     // events
     public static const ERROR:String = 'sstracker_request_error';
