@@ -43,7 +43,7 @@ class SSTracker
             $params["agg"] = "count";
         }
 
-        return $this->sendSecureRequest($name, $params);
+        return $this->sendSecureRequest('track_event', $params);
     }
 
     //
