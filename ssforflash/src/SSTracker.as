@@ -59,9 +59,6 @@ public class SSTracker extends EventDispatcher {
             req.data['val'] = value;
             req.data['agg'] = 'count';
         }
-        if (value) {
-            req.data['val'] = value
-        }
 
         _fireAndForget(req);
     }
