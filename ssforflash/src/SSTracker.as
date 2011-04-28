@@ -5,9 +5,14 @@ import external_libs.json.JSON;
 import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.events.IOErrorEvent;
+import flash.events.TimerEvent;
 import flash.net.URLLoader;
 import flash.net.URLRequest;
 import flash.net.URLVariables;
+
+import flash.utils.Timer;
+
+import org.osmf.events.TimeEvent;
 
 public class SSTracker extends EventDispatcher {
     // events
@@ -24,7 +29,13 @@ public class SSTracker extends EventDispatcher {
     private var _api_key:String;
     private var _sid : String;
 
+    public static var FLUSH_INTERVAL : int = 10000;
+    public static var FLUSH_CHANGES : int = 10;
+
+    private var _timer:Timer = new Timer(FLUSH_INTERVAL);
+
     private var _global_options:Object = new Object();
+    private var _buffer : Array;
 
     public function SSTracker(swf_id:String, api_key:String, viewer_id:String, test_mode:Boolean) {
         _swf_id = swf_id;
@@ -37,6 +48,25 @@ public class SSTracker extends EventDispatcher {
         };
         _global_options.onComplete = function (data:Object):void {
         };
+
+        _timer.addEventListener(TimerEvent.TIMER, onBufferTimerElapsed);
+    }
+
+    private function onBufferTimerElapsed(event : TimerEvent) : void {
+        _flushBuffer();
+    }
+
+    public function flushBuffers() : void {
+        _flushBuffer();
+    }
+
+    private function _flushBuffer() : void {
+        var req : URLRequest = _getRequestObject('post_batch', 'POST');
+        req.data['batch'] = JSON.encode(_buffer);
+        _fireAndForget(req);
+
+        _buffer = [];
+        _timer.stop();
     }
 
     public function init() : void {
@@ -53,14 +83,48 @@ public class SSTracker extends EventDispatcher {
     }
 
     public function trackEvent(eventName:String, value:String = null):void {
-        var req:URLRequest = _getRequestObject('track_event', 'POST');
-        req.data['act'] = eventName;
+        var data : Object = {
+            meth : 'track_event',
+            act : eventName
+        };
         if(value) {
-            req.data['val'] = value;
-            req.data['agg'] = 'count';
+            data.val = value;
+            data.agg = 'count';
         }
 
-        _fireAndForget(req);
+        enqueueRequest(data);
+    }
+
+    public function trackNumber(eventName:String, value:Number):void {
+        var req:URLRequest = _getRequestObject('track_event', 'POST');
+        var data : Object = {
+            meth : 'track_event',
+            act : eventName,
+            val : value,
+            agg : 'number'
+        };
+
+        enqueueRequest(data);
+    }
+
+    private function enqueueRequest(data : Object) : void {
+        if(!_buffer) {
+            _buffer = [];
+        }
+
+        _buffer.push(data);
+
+        if(_buffer.length >= FLUSH_CHANGES) {
+            _flushBuffer();
+        } else {
+            startTimer();
+        }
+    }
+
+    private function startTimer() : void {
+        if(!_timer.running) {
+            _timer.start();
+        }
     }
 
     private function _getRequestObject(method_name:String, req_type:String = 'GET'):URLRequest {
