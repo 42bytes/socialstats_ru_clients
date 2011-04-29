@@ -21,14 +21,18 @@ class SSTracker
 
     // secret key you can get on SocialStats admin panel
     private $swf_key;
+	
+	// a unique user identifier in social network
+	private $viewer_id;
 
     //
     //Create and initialize object.
     //
-    public function __construct($swf_id, $swf_key)
+    public function __construct($swf_id, $swf_key, $viewer_id = "server")
     {
         $this->swf_id = $swf_id;
         $this->swf_key = $swf_key;
+	    $this->viewer_id = $viewer_id;	
     }
 
     //
@@ -43,7 +47,7 @@ class SSTracker
             $params["agg"] = "count";
         }
 
-        return $this->sendSecureRequest('track_event', $params);
+        return $this->sendSecureRequest("track_event", $params);
     }
 
     //
@@ -53,7 +57,7 @@ class SSTracker
     {
         $params = array(
             "swf_id" => $this->swf_id,
-            "vid" => "server",
+            "vid" => $this->viewer_id,
             "rid" => rand()
         );
 
@@ -87,7 +91,7 @@ class SSTracker
     {
         ksort($params);
 
-        $sig = 'server';
+        $sig = $this->viewer_id;
         foreach ($params as $key => $value) {
             $sig .= "$key=$value";
         }
