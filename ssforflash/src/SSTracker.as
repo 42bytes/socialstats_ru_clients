@@ -24,7 +24,6 @@ public class SSTracker extends EventDispatcher {
     private const SSTRACKER_URL:String = "http://socialstats.ru/flash/";
 
     private var _viewer_id:String;
-    private var _is_test_mode:Boolean;
     private var _swf_id:String;
     private var _api_key:String;
     private var _sid : String;
@@ -37,11 +36,10 @@ public class SSTracker extends EventDispatcher {
     private var _global_options:Object = new Object();
     private var _buffer : Array;
 
-    public function SSTracker(swf_id:String, api_key:String, viewer_id:String, test_mode:Boolean) {
+    public function SSTracker(swf_id:String, api_key:String, viewer_id:String) {
         _swf_id = swf_id;
         _api_key = api_key;
         _viewer_id = viewer_id;
-        _is_test_mode = test_mode;
 
         _global_options.onError = function (evt:Event):void {
             dispatchEvent(new Event(IO_ERROR));
@@ -135,12 +133,6 @@ public class SSTracker extends EventDispatcher {
         params['swf_id'] = _swf_id;
         params['sid'] = _sid;
         params['rid'] = Math.random().toString();
-
-
-        // TODO
-        if (_is_test_mode)
-            params['test_mode'] = 1;
-
 
         req.data = params;
         return req;
