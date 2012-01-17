@@ -53,9 +53,9 @@ public class SSTracker extends EventDispatcher {
   }
 
   private function _flushBuffer() : void {
-    var req : URLRequest = _getRequestObject('post_batch', 'POST');
-    req.data['batch'] = JSON.encode(_buffer);
-    _fireAndForget(req);
+    var req2 : URLRequest = _getRequestObject2('post_batch', 'POST');
+    req2.data['batch'] = JSON.encode(_buffer);
+    _fireAndForget(req2);
 
     _buffer = [];
     _timer.stop();
@@ -127,22 +127,19 @@ public class SSTracker extends EventDispatcher {
     }
   }
 
-  private function _getRequestObject(method_name : String, req_type : String = 'GET') : URLRequest {
-    var params : URLVariables = new URLVariables();
-    params['vid'] = _viewer_id;
-    params['rid'] = Math.random().toString();
-//        params['app_id'] = _swf_id;
-//        params['app_key'] = _api_key;
-//        params["method"] = method_name;
-//
-//        var SSTRACKER_URL : String = "http://api.socialstats.ru/api/v2";
-//        var req : URLRequest = new URLRequest(SSTRACKER_URL);
+  private function _getRequestObject2(method_name : String, req_type : String = 'GET') : URLRequest {
+      var params:URLVariables = new URLVariables();
+      params['vid'] = _viewer_id;
+      params['rid'] = Math.random().toString();
+      params['app_id'] = _swf_id;
+      params['app_key'] = _api_key;
 
-    var SSTRACKER_URL : String = "http://socialstats.ru/api";
-    var req : URLRequest = new URLRequest(SSTRACKER_URL + "/v2/" + _swf_id + "/" + _api_key + "/" + method_name);
-    req.method = req_type;
-    req.data = params;
-    return req;
+      var SSTRACKER_URL:String = "http://api.socialstats.ru/api/v2/batch";
+      var req:URLRequest = new URLRequest(SSTRACKER_URL);
+
+      req.method = req_type;
+      req.data = params;
+      return req;
   }
 
   private function _fireAndForget(request : URLRequest) : void {
