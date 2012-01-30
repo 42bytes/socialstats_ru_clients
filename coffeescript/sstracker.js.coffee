@@ -1,5 +1,5 @@
 class SSTracker
-  constructor: (@api_id, @api_key, @viewer_id) ->
+  constructor: (@app_id, @app_key, @viewer_id) ->
 
   begin: () ->
     @batch = []
@@ -45,9 +45,11 @@ class SSTracker
 
   send_batch: (data) ->
     params =
-      vid: @viewer_id,
-      rid: Math.random().toString(),
+      vid: @viewer_id
+      rid: Math.random().toString()
       batch: JSON.stringify data
+      app_id: @app_id
+      app_key: @app_key
 
-    url = "http://socialstats.ru/api/v2/#{@api_id}/#{@api_key}/post_batch"
+    url = "http://api.socialstats.ru/api/v2/batch"
     $.post url, params

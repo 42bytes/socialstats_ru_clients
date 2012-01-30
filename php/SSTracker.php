@@ -56,15 +56,16 @@ class SSTracker
     private function sendSecureRequest($methodName, $additionalParams = array())
     {
         $params = array(
-            "swf_id" => $this->swf_id,
+            "app_id" => $this->swf_id,
+            "app_key" => $this->swf_key,
             "vid" => $this->viewer_id,
-            "rid" => rand()
+            "rid" => rand(),
+            "method" => $methodName
         );
 
         $params = array_merge($params, $additionalParams);
 
-        $params["sig"] = $this->getSignature($params);
-        $url = "http://socialstats.ru/flash/" . $methodName;
+        $url = "http://api.socialstats.ru/api/v2";
 
         //send request using POST method
         $curl_handle = curl_init();
@@ -82,22 +83,6 @@ class SSTracker
         //
 
         return json_decode($answer);
-    }
-
-    //
-    //Calculate signature
-    //
-    private function getSignature($params)
-    {
-        ksort($params);
-
-        $sig = $this->viewer_id;
-        foreach ($params as $key => $value) {
-            $sig .= "$key=$value";
-        }
-        $sig .= $this->swf_key;
-
-        return md5($sig);
     }
 }
 

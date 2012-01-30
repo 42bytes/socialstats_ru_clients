@@ -17,26 +17,23 @@ class SSTracker
 
     send_secure_request 'track_event', parms
   end
-
+  
+  def track_number name, value
+    parms = {:act => name,
+      :val = value,
+      :agg => 'number'}
+    
+    send_secure_request 'track_event', parms
+  end
 
   private
   def send_secure_request method_name, additional_params = {}
-    parms = {:swf_id => @swf_id,
+    parms = {:app_id => @swf_id,
+             :app_key => @swf_key,
              :vid => 'server',
              :rid => rand}.merge(additional_params)
-    parms[:sig] = get_signature(parms)
-    url = "http://socialstats.ru/flash/#{method_name}"
+             
+    url = "http://api.socialstats.ru/api/v2"
     JSON.parse(Net::HTTP.post_form(URI.parse(url), parms.stringify_keys).body)
-  end
-
-
-  def get_signature parameters = {}
-    str = "server"
-    parameters.stringify_keys.sort.each do |k, v|
-      str << "#{k}=#{v}"
-    end
-    str << @swf_key
-
-    Digest::MD5.hexdigest(str)
   end
 end
