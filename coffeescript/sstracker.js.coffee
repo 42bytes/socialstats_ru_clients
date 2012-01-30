@@ -15,25 +15,28 @@ class SSTracker
     if value || value == 0
       data.val = value
       data.agg = 'count'
+
     this.send_request data
     this
 
   trackNumber: (name, value) ->
     data =
       meth : 'track_event'
-      act : name,
-      val : value,
+      act : name
+      val : value
       agg : 'number'
+
     this.send_request data
     this
 
   sendUserInfo: (gender, age, nFriends, nAppFriends) ->
-    data =
-      meth : 'send_user_info',
-      g : gender,
-      a : age,
-      nfr : nFriends,
+    data = 
+      meth : 'send_user_info'
+      g : gender
+      a : age
+      nfr : nFriends
       nafr : nAppFriends
+
     this.send_request data
     this
 
