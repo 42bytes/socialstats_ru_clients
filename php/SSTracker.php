@@ -59,7 +59,9 @@ class SSTracker
             "a" => $age,
             "nfr" => $nFriends,
             "nafr" => $nAppFriends
-        )
+        );
+        
+        return $this->sendSecureRequest("user_data", $params);
     }
 
     //
