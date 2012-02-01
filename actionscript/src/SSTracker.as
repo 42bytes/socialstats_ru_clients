@@ -12,14 +12,11 @@ import flash.net.URLVariables;
 import flash.utils.Timer;
 
 public class SSTracker extends EventDispatcher {
-  // events
-  public static const ERROR : String = 'sstracker_request_error';
+
   public static const IO_ERROR : String = 'io_error';
 
-  public static const INITIALIZED : String = 'sstracker_initialized';
-
   private var _viewer_id : String;
-  private var _swf_id : String;
+  private var _app_id : String;
   private var _api_key : String;
 
   public static var FLUSH_INTERVAL : int = 10000;
@@ -31,7 +28,7 @@ public class SSTracker extends EventDispatcher {
   private var _buffer : Array;
 
   public function SSTracker(swf_id : String, api_key : String, viewer_id : String) {
-    _swf_id = swf_id;
+    _app_id = swf_id;
     _api_key = api_key;
     _viewer_id = viewer_id;
 
@@ -53,7 +50,7 @@ public class SSTracker extends EventDispatcher {
   }
 
   private function _flushBuffer() : void {
-    var req2 : URLRequest = _getRequestObject2('post_batch', 'POST');
+    var req2 : URLRequest = _getRequestObject2();
     req2.data['batch'] = JSON.encode(_buffer);
     _fireAndForget(req2);
 
@@ -127,11 +124,11 @@ public class SSTracker extends EventDispatcher {
     }
   }
 
-  private function _getRequestObject2(method_name : String, req_type : String = 'GET') : URLRequest {
+  private function _getRequestObject2(req_type : String = 'POST') : URLRequest {
       var params:URLVariables = new URLVariables();
       params['vid'] = _viewer_id;
       params['rid'] = Math.random().toString();
-      params['app_id'] = _swf_id;
+      params['app_id'] = _app_id;
       params['app_key'] = _api_key;
 
       var SSTRACKER_URL:String = "http://api.socialstats.ru/api/v2/batch";

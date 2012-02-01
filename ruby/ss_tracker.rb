@@ -25,6 +25,15 @@ class SSTracker
     
     send_secure_request 'track_event', parms
   end
+  
+  def send_user_info gender, age, n_friends, n_app_friends
+    parms = {:g => gender,
+      :a => age,
+      :nfr => n_friends,
+      :nafr => n_app_friends}
+      
+    send_secure_request 'user_data', parms
+  end
 
   private
   def send_secure_request method_name, additional_params = {}

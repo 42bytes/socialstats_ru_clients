@@ -49,6 +49,18 @@ class SSTracker
 
         return $this->sendSecureRequest("track_event", $params);
     }
+    
+    //
+    // Track information about user
+    //
+    public function sendUserInfo($gender, $age, $nFriends, $nAppFriends) 
+    {
+        $params = array("g" => $gender,
+            "a" => $age,
+            "nfr" => $nFriends,
+            "nafr" => $nAppFriends
+        )
+    }
 
     //
     //Send request to SocialStats server and get answer.
