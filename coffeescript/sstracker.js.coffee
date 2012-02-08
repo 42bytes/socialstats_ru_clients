@@ -1,4 +1,4 @@
-class SSTracker
+class window.SSTracker
   constructor: (@app_id, @app_key, @viewer_id) ->
 
   begin: () ->
