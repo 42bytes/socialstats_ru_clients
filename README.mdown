@@ -34,6 +34,6 @@ Ok, here you go.
 
     tracker.begin(); // start batch
     tracker.trackEvent('startLoading'); // enqueue some events.
-    tracker.sendUserInfo(10, m, 5, 2);
+    tracker.sendUserInfo(10, 'm', 5, 2);
     tracker.trackEvent('appFullyLoaded');
     tracker.commit(); // send all three events in one request, save yourself some traffic and latency.
