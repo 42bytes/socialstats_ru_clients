@@ -11,10 +11,11 @@ Download a version for your language/platform, include in in the project and sta
 Ok, here you go.
 
 ## Ruby example
-
-    tracker = SSTracker.new APP_ID, APP_KEY
-    tracker.vid = VIEWER_ID
-    tracker.track_event 'load' # track plain event
-    tracker.track_event 'referrer', 'notification' # break down one event into multiple parts
-    tracker.track_number 'buyCoins', 5 # Calc min/max/avg/sum of the values
-    tracker.send_user_info 25, 'f', 20, 10 # gender, age (m/f), number of friends, number of app friends
+```ruby
+tracker = SSTracker.new APP_ID, APP_KEY
+tracker.vid = VIEWER_ID
+tracker.track_event 'load' # track plain event
+tracker.track_event 'referrer', 'notification' # break down one event into multiple parts
+tracker.track_number 'buyCoins', 5 # Calc min/max/avg/sum of the values
+tracker.send_user_info 25, 'f', 20, 10 # gender, age (m/f), number of friends, number of app friends
+```
