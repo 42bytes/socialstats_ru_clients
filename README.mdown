@@ -30,7 +30,7 @@ Ok, here you go.
     var tracker = new window.SSTracker(APP_ID, APP_KEY, VISITOR_ID);
     tracker.trackEvent('referrer', 'menu'); // the same stuff again.
 
-    // These version can operate in batch mode as well. You need to opt-in, however.
+    // These versions can operate in batch mode as well. You need to opt-in, however.
 
     tracker.begin(); // start batch
     tracker.trackEvent('startLoading'); // enqueue some events.
