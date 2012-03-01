@@ -13,9 +13,33 @@ Ok, here you go.
 ## Ruby example
 ```ruby
 tracker = SSTracker.new APP_ID, APP_KEY
-tracker.vid = VIEWER_ID
+tracker.vid = VISITOR_ID
 tracker.track_event 'load' # track plain event
 tracker.track_event 'referrer', 'notification' # break down one event into multiple parts
 tracker.track_number 'buyCoins', 5 # Calc min/max/avg/sum of the values
 tracker.send_user_info 25, 'f', 20, 10 # gender, age (m/f), number of friends, number of app friends
+```
+
+## ActionScript example
+```actionscript
+var tracker: SSTracker = new SSTracker(APP_ID, APP_KEY, VISITOR_ID);
+tracker.trackEvent('load'); // the same stuff as in ruby code.
+
+// actionscript version by default operates in batch mode!
+SSTracker.flush_interval = 10000; // wait for 10 seconds before sending a batch
+SSTracker.flush_changes = 10; // or 10 changes, whichever comes first
+```
+
+## CoffeeScript/JavaScript example
+```javascript
+var tracker = new window.SSTracker(APP_ID, APP_KEY, VISITOR_ID);
+tracker.trackEvent('referrer', 'menu'); // the same stuff again.
+
+// These version can operate in batch mode as well. You need to opt-in, however.
+
+tracker.begin(); // start batch
+tracker.trackEvent('startLoading'); // enqueue some events.
+tracker.sendUserInfo(10, m, 5, 2);
+tracker.trackEvent('appFullyLoaded');
+tracker.commit(); // send all three events in one request, save yourself some traffic and latency.
 ```
