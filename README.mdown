@@ -4,7 +4,7 @@ This repository contains client libraries for [SocialStats](http://socialstats.r
 
 # How to use it?
 
-Download a version for your language/platform, include in in the project and start using!
+Download a version for your language/platform, include in the project and start using!
 
 # Gimme teh codez!
 
