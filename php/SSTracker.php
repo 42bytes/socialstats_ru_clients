@@ -50,6 +50,18 @@ class SSTracker
         return $this->sendSecureRequest("track_event", $params);
     }
     
+    ///
+    /// Track numerical data
+    ///
+    public function trackNumber($name, $value)
+    {
+        $params = array('act' => $name,
+                        'agg' => 'number',
+                        'val' => $value);
+                        
+        return $this->sendSecureRequest("track_event", $params);
+    }
+    
     //
     // Track information about user
     //
