@@ -126,7 +126,7 @@ public class NS24Client extends EventDispatcher {
   // Call when user makes a payment in the game
   public function payment(amount: Number): void {
     var data: Object = {
-      method: 'payment',
+      method: 'revenue', // not an error, should be revenue, not payment
       val: amount
     };
     
