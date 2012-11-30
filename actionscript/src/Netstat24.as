@@ -8,7 +8,6 @@ import flash.events.TimerEvent;
 import flash.net.URLLoader;
 import flash.net.URLRequest;
 import flash.net.URLVariables;
-
 import flash.utils.Timer;
 
 public class Netstat24 extends EventDispatcher {
@@ -48,10 +47,13 @@ public class Netstat24 extends EventDispatcher {
   }
   
 
-  // Track arbitrary events (button clicks, questions asked, etc.)
-  //   
-  // Examples: 
-  //  trackEvent('greenButtonClick')
+    
+  /**
+  * Track arbitrary events (button clicks, questions asked, etc.)
+  * 
+  * <p>Examples:</p>
+  * <code>trackEvent('greenButtonClick')</code>
+  */
   public function trackEvent(eventName: String) : void {
     var data: Object = {
       method: 'track_event',
@@ -60,14 +62,14 @@ public class Netstat24 extends EventDispatcher {
 
     enqueueRequest(data);
   }
-  // Track arbitrary events (button clicks, flowers sold, questions asked, etc.)
-  // Remember that value should belong to a smallish set of discrete values (up to 
-  //   several dozens is ok). DO NOT pass an arbitrary number or otherwise unbounded value.
-  //   
-  // Examples: 
-  //  trackEvent('greenButtonClick')
-  //  trackEvent('soldFlower', 'rose')  
   
+  /**
+   * Track arbitrary events (flowers sold, etc.)
+   * <p>Remember that value should belong to a smallish set of discrete values (up to 
+   * several dozens is ok). DO NOT pass an arbitrary number or otherwise unbounded value.</p>
+   * <p>Examples:</p>
+   * <code>trackEvent('soldFlower', 'rose')</code>
+  */
   public function trackValue(eventName: String, value: String) : void {
     var data: Object = {
       method: 'track_value',
@@ -79,8 +81,10 @@ public class Netstat24 extends EventDispatcher {
   }
   
 
-  // Track arbitrary numbers (XP gained, or whatever). For tracking revenue/payments,
-  // there is special method, payment(amount)
+  /**
+   * Track arbitrary numbers (XP gained, or whatever). For tracking revenue/payments, 
+   * there is special method, payment(amount) 
+  */
   public function trackNumber(eventName: String, value: Number) : void {
     var data: Object = {
       method: 'track_number',
@@ -91,9 +95,11 @@ public class Netstat24 extends EventDispatcher {
     enqueueRequest(data);
   }
   
-  // Send as soon as you get user's information.
-  // Without this data the system won't be able to filter your charts.
-  // NOTE: gender should be either 'f' or 'm' (female and male, respectively).
+  /**
+   * Send as soon as you get user's information.
+   * <p>Without this data the system won't be able to filter your charts.</p>
+   * <p>NOTE: gender should be either 'f' or 'm' (female and male, respectively).</p>
+  */
   public function userData(gender: String, age: Number, friends: Number, appFriends: Number, level: Number) : void {
     var data: Object = {
       method: 'user_data',
@@ -109,7 +115,9 @@ public class Netstat24 extends EventDispatcher {
   }
   
   
-  // Call on app startup
+  /**
+   * Call on app startup
+  */
   public function visit(source: String = null): void {
     var data: Object = {
       method: 'visit',
@@ -119,7 +127,9 @@ public class Netstat24 extends EventDispatcher {
     enqueueRequest(data);
   }
   
-  // Call when user installs the app
+  /**
+   * Call when user installs the app
+  */
   public function install(source: String = null): void {
     var data: Object = {
       method: 'install',
@@ -128,8 +138,10 @@ public class Netstat24 extends EventDispatcher {
 
     enqueueRequest(data);
   }
-  
-  // Call when user makes a payment in the game
+
+  /**
+   * Call when user makes a payment in the game
+  */
   public function revenue(amount: Number): void {
     var data: Object = {
       method: 'revenue', 
@@ -139,7 +151,9 @@ public class Netstat24 extends EventDispatcher {
     enqueueRequest(data);
   }
   
-  // Call when you send an invite in the game
+  /**
+   * Call when you send an invite in the game
+  */
   public function inviteSent(): void {
     var data: Object = {
       method: 'invite_sent'
@@ -148,10 +162,9 @@ public class Netstat24 extends EventDispatcher {
     enqueueRequest(data);
   }
     
-  
-  
-  
-  // Don't wait for timer to tick, flush buffers and send data out immediately.
+  /**
+   * Don't wait for timer to tick, flush buffers and send data out immediately.
+  */
   public function flushBuffers() : void {
     _flushBuffer();
   }
